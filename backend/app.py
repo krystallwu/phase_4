@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from dotenv import load_dotenv
-import os
+import os, datetime
 
 load_dotenv()
 
@@ -40,6 +40,30 @@ def list_airlines():
           .all()
     )
     data = [dict(row) for row in result]   # turn each RowMapping into a dict
+    return jsonify(data)
+
+# views:
+
+@app.route("/api/flights_in_the_air")
+def flights_in_the_air():
+    rows = (
+        db.session
+          .execute(text("SELECT * FROM flights_in_the_air"))
+          .mappings()
+          .all()
+    )
+
+    def serialize_row(row):
+        out = {}
+        for k, v in row.items():
+            # convert timedelta, datetime, date, time into strings
+            if isinstance(v, (datetime.timedelta, datetime.datetime, datetime.date, datetime.time)):
+                out[k] = str(v)
+            else:
+                out[k] = v
+        return out
+
+    data = [serialize_row(r) for r in rows]
     return jsonify(data)
 
 if __name__ == "__main__":
