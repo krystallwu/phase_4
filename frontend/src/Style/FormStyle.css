@@ -34,6 +34,10 @@
   border: 1px solid #ccc;
   background-color: #fff;
 }
+.form-input {
+  color: black; 
+}
+
 
 .form-submit {
   padding: 0.75rem;
