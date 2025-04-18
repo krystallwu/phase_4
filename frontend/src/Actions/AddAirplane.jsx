@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import '../Style/FormStyle.css'; 
 
-export default function AddAirplaneForm() {
+export default function AddAirplane() {
   const [formData, setFormData] = useState({
     tail_num: '',
     airline_id: '',
@@ -14,32 +15,44 @@ export default function AddAirplaneForm() {
   });
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('/add-airplane', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
-    const result = await res.json();
-    alert(result.status);
+    try {
+      const res = await fetch('http://localhost:5173/add_airplane', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const result = await res.json();
+      alert(result.message || 'Airplane added successfully!');
+    } catch (error) {
+      alert('Failed to add airplane. Please try again.');
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="tail_num" placeholder="Tail Num" onChange={handleChange} />
-      <input name="airline_id" placeholder="Airline ID" onChange={handleChange} />
-      <input name="plane_type" placeholder="Plane Type" onChange={handleChange} />
-      <input name="seat_capacity" placeholder="Seat Capacity" onChange={handleChange} />
-      <input name="speed" placeholder="Speed" onChange={handleChange} />
-      <input name="model" placeholder="Model" onChange={handleChange} />
-      <input name="maintained" placeholder="Maintained" onChange={handleChange} />
-      <input name="neo" placeholder="Neo" onChange={handleChange} />
-      <input name="location_id" placeholder="Location ID" onChange={handleChange} />
-      <button type="submit">Add Airplane</button>
-    </form>
+    <div className="form-container">
+      <h2 className="form-title">Add Airplane</h2>
+      <form onSubmit={handleSubmit} className="form">
+        {Object.keys(formData).map((key) => (
+          <div className="form-group" key={key}>
+            <label htmlFor={key}>{key.replace(/_/g, ' ')}</label>
+            <input
+              type="text"
+              id={key}
+              name={key}
+              value={formData[key]}
+              onChange={handleChange}
+              className="form-input"
+              placeholder={key.replace(/_/g, ' ')}
+            />
+          </div>
+        ))}
+        <button type="submit" className="form-submit">Submit</button>
+      </form>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../Style/FormStyle.css';
 
-export default function PassengersBoard() {
+export default function AssignPilot() {
   const [formData, setFormData] = useState({
     ssn: '',
     flight_id: ''
@@ -14,24 +14,24 @@ export default function PassengersBoard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/board_passenger', {
+      const res = await fetch('http://localhost:5000/assign_pilot_to_flight', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
       const result = await res.json();
-      alert(result.message || 'Passenger boarded!');
+      alert(result.message || 'Pilot assigned!');
     } catch (err) {
-      alert('Failed to board passenger.');
+      alert('Failed to assign pilot.');
     }
   };
 
   return (
     <div className="form-container">
-      <h2 className="form-title">Board Passenger</h2>
+      <h2 className="form-title">Assign Pilot to Flight</h2>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
-          <label htmlFor="ssn">Passenger SSN</label>
+          <label htmlFor="ssn">Pilot SSN</label>
           <input
             type="text"
             name="ssn"
@@ -54,7 +54,7 @@ export default function PassengersBoard() {
             placeholder="Flight ID"
           />
         </div>
-        <button type="submit" className="form-submit">Submit</button>
+        <button type="submit" className="form-submit">Assign</button>
       </form>
     </div>
   );
