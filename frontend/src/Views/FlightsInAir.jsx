@@ -5,35 +5,48 @@ export default function FlightsInAir() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/flights_in_the_air')
+    fetch('http://127.0.0.1:5000/api/flights_in_the_air')
       .then(res => res.json())
-      .then(data => setData(data))
+      .then(data => {
+        console.log("Fetched data:", data);  // ← see it in the browser console
+        setData(data);
+      })
       .catch(() => alert('Failed to load data.'));
   }, []);
+
+  const columnOrder = [
+    'airplane_list',
+    'arriving_at',
+    'departing_from',
+    'earliest_arrival',
+    'flight_list',
+    'latest_arrival',
+    'num_flights'
+  ];
 
   return (
     <div className="form-container">
       <h2 className="form-title">Flights In The Air</h2>
       {data.length === 0 ? <p>No flights currently in the air.</p> : (
         <table className="form-table">
-          <thead>
-            <tr>
-              {Object.keys(data[0]).map((key) => (
-                <th key={key}>{key.replace(/_/g, ' ')}</th>
+        <thead>
+          <tr>
+            {columnOrder.map(key => (
+              <th key={key}>{key.replace(/_/g, ' ')}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row, i) => (
+            <tr key={i}>
+              {columnOrder.map((key, j) => (
+                <td key={j}>{row[key]}</td>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {data.map((row, i) => (
-              <tr key={i}>
-                {Object.values(row).map((value, j) => (
-                  <td key={j}>{value}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
   );
 }

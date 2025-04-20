@@ -3,10 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from dotenv import load_dotenv
 import os, datetime
+from flask_cors import CORS
 
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 user = os.getenv("DB_USER")
 pw   = os.getenv("DB_PASS")
 host = os.getenv("DB_HOST", "localhost")
