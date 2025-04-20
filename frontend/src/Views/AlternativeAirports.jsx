@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import '../Style/FormStyle.css';
 
-export default function RouteSummary() {
+export default function AlternativeAirports() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/route_summary')
+    fetch('http://127.0.0.1:5000/api/alternative_airports')
       .then(res => res.json())
       .then(data => {
         console.log("Fetched data:", data);  // ← see it in the browser console
@@ -15,18 +15,17 @@ export default function RouteSummary() {
   }, []);
 
   const columnOrder = [
-    'airport_sequence',
-    'flight_list',
-    'leg_sequence',
-    'num_flights',
-    'num_legs',
-    'route',
-    'route_length'
+    'airport_code_list',
+    'airport_name_list',
+    'city',
+    'country',
+    'num_airports',
+    'state'
   ];
 
   return (
     <div className="form-container">
-      <h2 className="form-title">Route Summary</h2>
+      <h2 className="form-title">Alternative Airports</h2>
       {data.length === 0 ? <p>No flights currently in the air.</p> : (
         <table className="form-table">
         <thead>

@@ -18,7 +18,8 @@ export default function Home() {
     { path: '/flights-on-ground', label: 'Flights On Ground' },
     { path: '/people-in-air', label: 'People In Air' },
     { path: '/people-on-ground', label: 'People On Ground' },
-    { path: '/route-summary', label: 'Route Summary' }
+    { path: '/route-summary', label: 'Route Summary' },
+    { path: '/alternative-airports', label: 'Alternative Airports' }
   ];
 
   return (

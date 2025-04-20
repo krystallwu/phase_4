@@ -68,5 +68,115 @@ def flights_in_the_air():
     data = [serialize_row(r) for r in rows]
     return jsonify(data)
 
+@app.route("/api/flights_on_the_ground")
+def flights_on_the_ground():
+     rows = (
+         db.session
+           .execute(text("SELECT * FROM flights_on_the_ground"))
+           .mappings()
+           .all()
+     )
+ 
+     def serialize_row(row):
+         out = {}
+         for k, v in row.items():
+             # convert timedelta, datetime, date, time into strings
+             if isinstance(v, (datetime.timedelta, datetime.datetime, datetime.date, datetime.time)):
+                 out[k] = str(v)
+             else:
+                 out[k] = v
+         return out
+ 
+     data = [serialize_row(r) for r in rows]
+     return jsonify(data)
+ 
+ 
+@app.route("/api/people_in_the_air")
+def people_in_the_air():
+     rows = (
+         db.session
+           .execute(text("SELECT * FROM people_in_the_air"))
+           .mappings()
+           .all()
+     )
+ 
+     def serialize_row(row):
+         out = {}
+         for k, v in row.items():
+             if isinstance(v, (datetime.timedelta, datetime.datetime, datetime.date, datetime.time)):
+                 out[k] = str(v)
+             else:
+                 out[k] = v
+         return out
+ 
+     data = [serialize_row(r) for r in rows]
+     return jsonify(data)
+ 
+ 
+@app.route("/api/people_on_the_ground")
+def people_on_the_ground():
+     rows = (
+         db.session
+           .execute(text("SELECT * FROM people_on_the_ground"))
+           .mappings()
+           .all()
+     )
+ 
+     def serialize_row(row):
+         out = {}
+         for k, v in row.items():
+             if isinstance(v, (datetime.timedelta, datetime.datetime, datetime.date, datetime.time)):
+                 out[k] = str(v)
+             else:
+                 out[k] = v
+         return out
+ 
+     data = [serialize_row(r) for r in rows]
+     return jsonify(data)
+ 
+ 
+@app.route("/api/route_summary")
+def route_summary():
+     rows = (
+         db.session
+           .execute(text("SELECT * FROM route_summary"))
+           .mappings()
+           .all()
+     )
+ 
+     def serialize_row(row):
+         out = {}
+         for k, v in row.items():
+             if isinstance(v, (datetime.timedelta, datetime.datetime, datetime.date, datetime.time)):
+                 out[k] = str(v)
+             else:
+                 out[k] = v
+         return out
+ 
+     data = [serialize_row(r) for r in rows]
+     return jsonify(data)
+ 
+ 
+@app.route("/api/alternative_airports")
+def alternative_airports():
+     rows = (
+         db.session
+           .execute(text("SELECT * FROM alternative_airports"))
+           .mappings()
+           .all()
+     )
+ 
+     def serialize_row(row):
+         out = {}
+         for k, v in row.items():
+             if isinstance(v, (datetime.timedelta, datetime.datetime, datetime.date, datetime.time)):
+                 out[k] = str(v)
+             else:
+                 out[k] = v
+         return out
+ 
+     data = [serialize_row(r) for r in rows]
+     return jsonify(data)
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

@@ -17,6 +17,8 @@ import FlightsOnGround from './Views/FlightsOnGround';
 import PeopleInAir from './Views/PeopleInAir';
 import PeopleOnGround from './Views/PeopleOnGround';
 import RouteSummary from './Views/RouteSummary';
+import AlternativeAirports from './Views/AlternativeAirports';
+
 
 import Home from './Home';
 import './App.css';
@@ -44,6 +46,7 @@ function Navigation() {
       <Link to="/people-in-air">People in Air</Link>
       <Link to="/people-on-ground">People on Ground</Link>
       <Link to="/route-summary">Route Summary</Link>
+      <Link to="/alternative-airports">Alternative Airports</Link>
       <Link to="/">🏠 Home</Link>
     </nav>
   );
@@ -70,6 +73,7 @@ export default function App() {
         <Route path="/people-in-air" element={<PeopleInAir />} />
         <Route path="/people-on-ground" element={<PeopleOnGround />} />
         <Route path="/route-summary" element={<RouteSummary />} />
+        <Route path="/alternative-airports" element={<AlternativeAirports />} />
       </Routes>
     </Router>
   );

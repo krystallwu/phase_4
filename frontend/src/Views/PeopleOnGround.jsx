@@ -5,35 +5,54 @@ export default function PeopleOnGround() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/people_on_the_ground')
+    fetch('http://127.0.0.1:5000/api/people_on_the_ground')
       .then(res => res.json())
-      .then(data => setData(data))
+      .then(data => {
+        console.log("Fetched data:", data);  // ← see it in the browser console
+        setData(data);
+      })
       .catch(() => alert('Failed to load data.'));
   }, []);
+  
+  
+  {
+  const columnOrder = [
+    'airport',
+    'airport_name',
+    'city',
+    'country',
+    'departing_from',
+    'joint_pilots_passengers',
+    'num_passengers',
+    'num_pilots',
+    'person_list',
+    'state'
+  ];
 
   return (
     <div className="form-container">
-      <h2 className="form-title">People On The Ground</h2>
-      {data.length === 0 ? <p>No people currently on the ground.</p> : (
+      <h2 className="form-title">People On the Ground</h2>
+      {data.length === 0 ? <p>No flights currently in the air.</p> : (
         <table className="form-table">
-          <thead>
-            <tr>
-              {Object.keys(data[0]).map((key) => (
-                <th key={key}>{key.replace(/_/g, ' ')}</th>
+        <thead>
+          <tr>
+            {columnOrder.map(key => (
+              <th key={key}>{key.replace(/_/g, ' ')}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row, i) => (
+            <tr key={i}>
+              {columnOrder.map((key, j) => (
+                <td key={j}>{row[key]}</td>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {data.map((row, i) => (
-              <tr key={i}>
-                {Object.values(row).map((value, j) => (
-                  <td key={j}>{value}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
   );
+}
 }
