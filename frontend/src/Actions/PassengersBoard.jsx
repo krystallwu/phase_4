@@ -1,61 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../Style/FormStyle.css';
 
 export default function PassengersBoard() {
-  const [formData, setFormData] = useState({
-    ssn: '',
-    flight_id: ''
-  });
+  const [flightID, setFlightID] = useState('');
+  const [people, setPeople] = useState([]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  // load people on mount
+  useEffect(() => {
+    fetch('http://localhost:5000/api/people')
+      .then(r => r.json())
+      .then(setPeople)
+      .catch(console.error);
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    try {
-      const res = await fetch('http://localhost:5000/board_passenger', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      const result = await res.json();
-      alert(result.message || 'Passenger boarded!');
-    } catch (err) {
-      alert('Failed to board passenger.');
-    }
+    // send ip_flightID to match your Flask validation
+    const res = await fetch('http://localhost:5000/api/passengers_board', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ip_flightID: flightID })
+    });
+    const { success, message } = await res.json();
+    alert(message || (success ? '✅ Board attempted' : '❌ No change'));
+
+    // clear & reload
+    setFlightID('');
+    fetch('http://localhost:5000/api/people')
+      .then(r => r.json())
+      .then(setPeople)
+      .catch(console.error);
   };
 
   return (
     <div className="form-container">
-      <h2 className="form-title">Board Passenger</h2>
+      <h2 className="form-title">Passengers Board</h2>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
-          <label htmlFor="ssn">Passenger SSN</label>
+          <label htmlFor="ip_flightID">ip_flightID</label>
           <input
-            type="text"
-            name="ssn"
-            id="ssn"
-            value={formData.ssn}
-            onChange={handleChange}
+            id="ip_flightID"
+            value={flightID}
+            onChange={e => setFlightID(e.target.value)}
             className="form-input"
-            placeholder="SSN"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="flight_id">Flight ID</label>
-          <input
-            type="text"
-            name="flight_id"
-            id="flight_id"
-            value={formData.flight_id}
-            onChange={handleChange}
-            className="form-input"
-            placeholder="Flight ID"
           />
         </div>
         <button type="submit" className="form-submit">Submit</button>
       </form>
+
+      <h3>All People</h3>
+      <table className="form-table">
+        <thead>
+          <tr>
+            {['personID','first_name','last_name','locationID','role_data']
+              .map(c => <th key={c}>{c.replace(/_/g,' ')}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {people.map((p,i)=>(
+            <tr key={i}>
+              {['personID','first_name','last_name','locationID','role_data']
+                .map(c=> <td key={c}>{p[c]}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
