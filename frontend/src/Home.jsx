@@ -19,7 +19,10 @@ export default function Home() {
     { path: '/people-in-air', label: 'People In Air' },
     { path: '/people-on-ground', label: 'People On Ground' },
     { path: '/route-summary', label: 'Route Summary' },
-    { path: '/alternative-airports', label: 'Alternative Airports' }
+    { path: '/alternative-airports', label: 'Alternative Airports' },
+    { path: '/retire-flight', label: 'Retire Flight' },
+    { path: '/simulation-cycle', label: 'Simulation Cycle' },
+    { path: '/recycle-crew', label: 'Recycle Crew' }
   ];
 
   return (

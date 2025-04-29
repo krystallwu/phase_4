@@ -18,6 +18,9 @@ import PeopleInAir from './Views/PeopleInAir';
 import PeopleOnGround from './Views/PeopleOnGround';
 import RouteSummary from './Views/RouteSummary';
 import AlternativeAirports from './Views/AlternativeAirports';
+import RetireFlight from './RetireFlight';
+import SimulationCycle from './SimulationCycle';
+import RecycleCrew from './RecycleCrew';
 
 
 import Home from './Home';
@@ -47,6 +50,9 @@ function Navigation() {
       <Link to="/people-on-ground">People on Ground</Link>
       <Link to="/route-summary">Route Summary</Link>
       <Link to="/alternative-airports">Alternative Airports</Link>
+      <Link to="/retire-flight">Retire Flight</Link>
+      <Link to="/simulation-cycle">Simulation Cycle</Link>
+      <Link to="/recycle-crew">Recycle Crew</Link>
       <Link to="/">🏠 Home</Link>
     </nav>
   );
@@ -74,6 +80,9 @@ export default function App() {
         <Route path="/people-on-ground" element={<PeopleOnGround />} />
         <Route path="/route-summary" element={<RouteSummary />} />
         <Route path="/alternative-airports" element={<AlternativeAirports />} />
+        <Route path="/retire-flight" element={<RetireFlight />} />
+        <Route path="/simulation-cycle" element={<SimulationCycle />} />
+        <Route path="/recycle-crew" element={<RecycleCrew />} />
       </Routes>
     </Router>
   );
