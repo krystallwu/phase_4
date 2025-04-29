@@ -18,7 +18,7 @@ export default function AddAirplane() {
 
   // load all airplanes on mount (and after each add)
   const fetchAirplanes = () => {
-    fetch('http://localhost:5000/api/airplanes')
+    fetch('http://127.0.0.1:5000/api/airplanes')
       .then(res => res.json())
       .then(setAirplanes)
       .catch(console.error);

@@ -222,6 +222,24 @@ def api_passengers_board():
 
     return jsonify(success=True, message=f"Flight {data['ip_flightID']} boarded"), 201
 
+@app.route("/api/passengers_disembark", methods=["POST"])
+def api_passengers_disembark():
+    data = request.get_json() or {}
+    # require the stored-proc param
+    required = ["ip_flightID"]
+    if any(k not in data or data[k] == "" for k in required):
+        return jsonify(success=False, message="ip_flightID is required"), 400
+
+    # call the passengers_board SP
+    db.session.execute(text("""
+      CALL passengers_disembark(:fid)
+    """), {
+      "fid": data["ip_flightID"]
+    })
+    db.session.commit()
+
+    return jsonify(success=True, message=f"Flight {data['ip_flightID']} disembarked"), 201
+
 
 
 # --- view endpoints --- #

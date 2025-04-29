@@ -7,7 +7,7 @@ export default function PassengersBoard() {
 
   // load people on mount
   useEffect(() => {
-    fetch('http://localhost:5000/api/people')
+    fetch('http://127.0.0.1:5000/api/people')
       .then(r => r.json())
       .then(setPeople)
       .catch(console.error);
