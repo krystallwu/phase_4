@@ -240,6 +240,56 @@ def api_passengers_disembark():
 
     return jsonify(success=True, message=f"Flight {data['ip_flightID']} disembarked"), 201
 
+@app.route('/api/recycle_crew', methods=['POST'])
+def api_recycle_crew():
+    data = request.get_json()
+    # require the stored-proc param
+    required = ["ip_flightID"]
+    if any(k not in data or data[k] == "" for k in required):
+        return jsonify(success=False, message="Missing flight ID"), 400
+    try:
+        db.session.execute(text("""
+        CALL recycle_crew(:fid)
+        """), {
+        "fid": data["ip_flightID"]
+        })
+        db.session.commit()
+        return jsonify(success=True, message=f"Flight {data['ip_flightID']} crew recycled"), 201
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
+
+
+@app.route('/api/retire_flight', methods=['POST'])
+def api_retire_flight():
+    data = request.get_json()
+    # require the stored-proc param
+    required = ["ip_flightID"]
+    if any(k not in data or data[k] == "" for k in required):
+        return jsonify(success=False, message="Missing flight ID")
+    try:
+        db.session.execute(text("""
+        CALL retire_flight(:fid)
+        """), {
+        "fid": data["ip_flightID"]
+        })
+        db.session.commit()
+        return jsonify(success=True, message=f"Flight {data['ip_flightID']} retired"), 201
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
+
+
+@app.route('/api/simulation_cycle', methods=['POST'])
+def api_simulation_cycle():
+    try:
+        db.session.execute(text("""
+        CALL simulation_cycle()
+        """), {
+        })
+        db.session.commit()
+        return jsonify(success=True, message=f"Flight simulation updated"), 201
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
+
 
 
 # --- view endpoints --- #
